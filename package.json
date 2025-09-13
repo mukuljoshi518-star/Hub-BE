@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon index.js"
-    },
+  },
   "author": "Mukul Joshi",
   "license": "ISC",
   "devDependencies": {
@@ -28,7 +28,7 @@
     "mysql2": "^2.1.0",
     "nodemailer": "^7.0.6",
     "openai": "^5.6.0",
-    "sequelize": "^5.22.5",
+    "sequelize": "^6.1.0",
     "validator": "^13.1.1"
   }
 }
