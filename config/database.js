@@ -1,23 +1,20 @@
 const Sequelize = require('sequelize');
-const env = require('dotenv');
-env.config();
+require('dotenv').config();
 
-const DB_HOST = process.env.DB_HOST
-const DB_PORT = process.env.DB_PORT
-const DB_DATABASE = process.env.DB_DATABASE
-const DB_USERNAME = process.env.DB_USERNAME
-const DB_PASSWORD = process.env.DB_PASSWORD
-
-const sequelize = new Sequelize({
-  dialect: 'mysql', // or postgres, sqlite, etc.
-  host: DB_HOST,
-  username: DB_USERNAME, // your DB username
-  password: DB_PASSWORD, // your DB password
-  database: DB_DATABASE, // your DB name
+const sequelize = new Sequelize(process.env.DB_DATABASE, process.env.DB_USERNAME, process.env.DB_PASSWORD, {
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  dialect: 'postgres',
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false  // agar self-signed certificate hai toh false rakho
+    }
+  },
+  logging: false,
 });
 
-sequelize
-  .authenticate()
+sequelize.authenticate()
   .then(() => console.log('Database connected successfully!'))
   .catch(err => console.error('Unable to connect to the database:', err));
 
