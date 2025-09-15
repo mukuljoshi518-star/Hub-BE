@@ -10,17 +10,29 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const expressHbs = require('express-handlebars');
 const SequelizeStore = require("connect-session-sequelize")(session.Store); // initalize sequelize with session store
+const multer = require('multer');
 
 const app = express();
 
 const router = express.Router();
 
 
-
-const uploadsDir = path.join(__dirname, '../../app/uploads');
+const uploadsDir = path.join('/tmp', 'uploads');
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
 }
+
+// ✅ Now define storage after uploadsDir exists
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, uploadsDir);
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' + file.originalname);
+  }
+});
+const upload = multer({ storage });
+
 
 // ✅ Enable CORS
 app.use(cors({
@@ -78,6 +90,20 @@ app.use('/api/v1/genaiimg', aiImageRoutes);
 app.use('/uploads', express.static(uploadsDir));
 
 app.use(errorController.pageNotFound);
+
+app.post('/', upload.single('file'), (req, res) => {
+  try {
+    res.status(200).json({
+      message: 'File uploaded successfully',
+      filename: req.file.filename,
+      path: req.file.path,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Upload failed' });
+  }
+});
+
 
 sequelize
 	//.sync({force : true})
