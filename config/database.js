@@ -5,12 +5,7 @@ const sequelize = new Sequelize(process.env.DB_DATABASE, process.env.DB_USERNAME
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
   dialect: 'mysql',
-  // dialectOptions: {
-  //   ssl: {
-  //     require: true,
-  //     rejectUnauthorized: false  // agar self-signed certificate hai toh false rakho
-  //   }
-  // },
+  dialectModule: require('mysql2'),
   logging: false,
 });
 
