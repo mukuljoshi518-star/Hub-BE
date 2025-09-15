@@ -25,6 +25,7 @@
     "express-handlebars": "^5.1.0",
     "express-session": "^1.17.1",
     "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.2",
     "mysql2": "^2.1.0",
     "nodemailer": "^7.0.6",
     "openai": "^5.6.0",
